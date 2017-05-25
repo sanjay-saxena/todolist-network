@@ -60,24 +60,30 @@ participant Admin extends User {
 
 A participant is uniquely identified by his/her `email`.
 
-The model also defines the following `Transaction` types:
+The model also defines `Transaction` types and some of them are shown below:
 
 ```
 transaction Bootstrap identified by transactionId {
     o String transactionId
 }
 
-transaction Assign identified by transactionId {
+transaction AssignTask identified by transactionId {
     o String transactionId
     --> Task task
     --> Superhero assignee
 }
 
-transaction Execute identified by transactionId {
+transaction CreateTask identified by transactionId {
     o String transactionId
     --> Task task
 }
 
+transaction CompleteTask identified by transactionId {
+    o String transactionId
+    --> Task task
+}
+
+....
 ```
 
 The transactions are used to trigger the Business Logic.
@@ -150,8 +156,8 @@ function onBootstrap(txn) {
            .then(function() {
                return getAssetRegistry('org.example.todolist.Task');
            })
-           .then(function(tregistry) {
-               tasksRegistry = tregistry;
+           .then(function(assetRegistry) {
+               tasksRegistry = assetRegistry;
                return tasksRegistry.addAll(tasks);
            })
           .catch(function (error) {
@@ -164,54 +170,53 @@ function onBootstrap(txn) {
 
 which implements the business logic for `Bootstrap` transaction. The `onBootstrap()` function creates an `Admin` instance for `bobby.da.boss` and `Superhero` instances for `batman`, `catwoman`, `spiderman`, and `superman` as participants. It also creates some `Task` instances to represent assets. The world state is populated using the assets and the participants and the `Bootstrap` transaction is added to the immutable ledger.
 
-So, `bobby.da.boss`(our admin) can assign a task to a specific superhero by submitting the `Assign` transaction. As a result, Hyperledger Composer runtime will invoke the following `onAssignment()` function:
+So, `bobby.da.boss`(our admin) can assign a task to a specific superhero by submitting the `AssignTask` transaction. As a result, Hyperledger Composer runtime will invoke the following `onAssignTask()` function:
 
 ```
 /**
  * Assigns the item/task to a user.
- * @param {org.example.todolist.Assign} txn -- Assign transaction
+ * @param {org.example.todolist.AssignTask} txn -- AssignTask transaction
  * @transaction
  */
-function onAssignment(txn) {
-    var task = txn.task;
-    if (task.state !== 'ACTIVE') {
-        throw new Error('Task has already been executed');
-    }
+function onAssignTask(txn) {
+    ....
 
-    task.assignee = txn.assignee;
+    task.assignee = txn.taskAssignee;
+    task.state = 'ACTIVE';
+    ....
+
     return getAssetRegistry('org.example.todolist.Task')
-          .then(function(result) {
-              result.update(txn.task);
+          .then(function(assetRegistry) {
+              assetRegistry.update(txn.task);
           }
     );
 }
 ```
 
-which updates the task's assignee field and updates the world state appropriately and the `Assign` transaction gets added to the immutable ledger.
+which updates the task's assignee field and updates the world state appropriately and the `AssignTask` transaction gets added to the immutable ledger.
 
-And, when a superhero completes a task, he/she can submit the `Execute` transaction. This will result in Hyperledger Composer invoking the following `onExecution()` function:
+And, when a superhero completes a task, he/she can submit the `CompleteTask` transaction. This will result in Hyperledger Composer invoking the following `onCompleteTask()` function:
 
 ```
 /**
  * Marks the item/task as COMPLETED once it has been successfully dealt with.
- * @param {org.example.todolist.Execute} txn -- Execute transaction
+ * @param {org.example.todolist.CompleteTask} txn -- CompleteTask transaction
  * @transaction
  */
-function onExecution(txn) {
-    var task = txn.task;
-    if (task.state !== 'ACTIVE') {
-        throw new Error('Task has already been executed');
-    }
+function onCompleteTask(txn) {
+    ....
 
     task.state = 'COMPLETED';
+    ....
+
     return getAssetRegistry('org.example.todolist.Task')
-          .then(function(result) {
-              result.update(txn.task);
+          .then(function(assetRegistry) {
+              assetRegistry.update(txn.task);
           }
     );
 }
 ```
-where the task is updated, world state reflects the change, and the `Execute` transaction gets added to the immutable ledger.
+where the task is updated, world state reflects the change, and the `CompleteTask` transaction gets added to the immutable ledger.
 
 So, the changes to the world state are triggered in response to transactions being submitted and validated. And, eventually the transaction gets added to the immutable ledger.
 
@@ -247,6 +252,12 @@ $ ./scripts/bootstrapTransaction.sh
 You can use `./scripts/list.sh` to look at the assets that were created by the `Bootstrap` transaction.
 
 ## Generate Angular2 app
+
+First, install the generator as shown below:
+
+```
+$ npm install -g generator-hyperledger-composer
+```
 
 Here is the step to generate the Angular2 app for Todo List using Yeoman:
 
