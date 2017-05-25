@@ -33,27 +33,26 @@ The model consists of `Task` type representing an `Asset`. A `Task` is uniquely 
 
 ```
 asset Task identified by id {
-    o String id
-    o String description
+    o String taskId
+    o String name
+    o String tags
     o TaskState state
-    --> Superhero assignee optional
-    --> Admin creator
+    --> User assignee optional
+    --> User createdBy
+    --> User lastUpdatedBy optional
+    ...
 }
 ```
 
 The model also contains `Admin` and `Superhero` types representing `Participants` in the network:
 
 ```
-abstract participant User identified by email {
+participant User identified by email {
   o String email
   o String firstName
   o String lastName
-}
-
-participant Superhero extends User {
-}
-
-participant Admin extends User {
+  o String password
+  ...
 }
 
 ```
@@ -70,17 +69,20 @@ transaction Bootstrap identified by transactionId {
 transaction AssignTask identified by transactionId {
     o String transactionId
     --> Task task
-    --> Superhero assignee
+    --> User assignee
+    ...
 }
 
 transaction CreateTask identified by transactionId {
     o String transactionId
+    ....
     --> Task task
 }
 
 transaction CompleteTask identified by transactionId {
     o String transactionId
     --> Task task
+    ...
 }
 
 ....
@@ -109,21 +111,21 @@ function onBootstrap(txn) {
 
     // Admin
     var bossman = factory.newInstance('org.example.todolist',
-                                      'Admin',
+                                      'User',
                                       'bobby.da.boss@example.com');
     bossman.firstName = "Bobby";
     bossman.lastName = "Da Boss";
     admins.push(bossman);
 
     var catwoman = factory.newInstance('org.example.todolist',
-                                       'Superhero',
+                                       'User',
                                        'catwoman@example.com');
     catwoman.firstName = "Selina";
     catwoman.lastName = "Kyle";
     superheroes.push(catwoman);
 
     var batman = factory.newInstance('org.example.todolist',
-                                     'Superhero',
+                                     'User',
                                      'batman@example.com');
     batman.firstName = "Bruce";
     batman.lastName = "Wayne";
@@ -141,24 +143,17 @@ function onBootstrap(txn) {
 
     ....
 
-    return getParticipantRegistry('org.example.todolist.Superhero')
-           .then(function(shregistry) {
-               superheroesRegistry = shregistry;
-               return superheroesRegistry.addAll(superheroes);
-           })
-           .then(function() {
-               return getParticipantRegistry('org.example.todolist.Admin');
-           })
-           .then(function(aregistry) {
-               adminRegistry = aregistry;
-               return adminRegistry.addAll(admins);
+    return getParticipantRegistry('org.example.todolist.User')
+           .then(function(participantRegistry) {
+               userRegistry = participantRegistry;
+               return userRegistry.addAll(users);
            })
            .then(function() {
                return getAssetRegistry('org.example.todolist.Task');
            })
            .then(function(assetRegistry) {
-               tasksRegistry = assetRegistry;
-               return tasksRegistry.addAll(tasks);
+               taskRegistry = assetRegistry;
+               return taskRegistry.addAll(tasks);
            })
           .catch(function (error) {
               console.log(error);
@@ -296,4 +291,8 @@ $ npm start
 
 ````
 
-The app will be compiled and you can eventually interact with it by pointing your browser to `http://localhost:4200`.
+The app will be compiled and you can eventually interact with it by pointing your browser to `http://localhost:4200`. Also, you can look and play with the generated REST APIs or endpoints by
+pointing your browser to the Loopback Explorer at `http://localhost:3000/explorer`. You can
+also exercise the REST API to retrieve all the Tasks that were created by the
+`Bootstrap` transaction by pointing your browser to `http://localhost:3000/api/Task` to
+receive JSON response containing all the tasks in the world state.
