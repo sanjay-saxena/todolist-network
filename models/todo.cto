@@ -1,0 +1,209 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace org.example.todolist
+
+enum TaskDuration {
+    o ANY
+    o THIRTY_MINUTES
+    o SIXTY_MINUTES
+    o TWO_HOURS
+    o FOUR_HOURS
+    o LONG
+}
+
+enum TaskEnergyLevel {
+    o ANY
+    o LOW
+    o NORMAL
+    o HIGH
+}
+
+enum TaskState {
+    o ACTIVE
+    o BLOCKED
+    o INACTIVE
+    o COMPLETED
+}
+
+asset Task identified by taskId {
+    o String taskId
+    o String name
+    o String location optional
+    o TaskDuration duration optional
+    o TaskEnergyLevel energy optional
+    o TaskState state optional
+    o Integer due optional
+    o String tags optional
+    o String notes optional
+    o DateTime createdAt
+    o DateTime lastUpdatedAt optional
+    --> User assignee optional
+    --> User createdBy
+    --> User lastUpdatedBy optional
+}
+
+participant User identified by email {
+  o String email
+  o String firstName
+  o String lastName
+  o String password
+  o DateTime createdAt
+  o DateTime lastUpdatedAt optional
+}
+
+/*
+ * Transactions for creating, updating, and deleting users.
+ */
+transaction CreateUser identified by txnId {
+    o String txnId
+    o String userEmail
+    o String userFirstName
+    o String userLastName
+    o String userPassword
+    --> User transactionExecutor
+}
+
+transaction UpdateUser identified by txnId {
+    o String txnId
+    o String userFirstName optional
+    o String userLastName optional
+    o String userPassword optional
+    --> User user
+    --> User transactionExecutor
+}
+
+transaction DeleteUser identified by txnId {
+    o String txnId
+    --> User user
+    --> User transactionExecutor
+}
+
+/*
+ * Transactions for assigning, creating, completing, deleting,  and updating tasks.
+ */
+transaction AssignTask identified by txnId {
+    o String txnId
+    --> Task task
+    --> User taskAssignee
+    --> User transactionExecutor
+}
+
+transaction CompleteTask identified by txnId {
+    o String txnId
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction CreateTask identified by txnId {
+    o String txnId
+    o String taskId
+    o String taskName
+    o String taskLocation optional
+    o TaskDuration taskDuration optional
+    o TaskEnergyLevel taskEnergy optional
+    o String taskTags optional
+    o String taskNotes optional
+    o Integer taskDue optional
+    --> User taskAssignee optional
+    --> User transactionExecutor
+}
+
+transaction DeleteTask identified by txnId {
+    o String txnId
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction UpdateTask identified by txnId {
+    o String txnId
+    o String taskName optional
+    o String taskLocation optional
+    o TaskDuration taskDuration optional
+    o TaskEnergyLevel taskEnergy optional
+    o TaskState taskState optional
+    o String taskTags optional
+    o String taskNotes optional
+    o Integer taskDue optional
+    --> User taskAssignee optional
+    --> User transactionExecutor
+    --> Task task
+}
+
+/*
+ * Transactions for selectively updating attributes of a task.
+
+transaction AppendNotes identified by txnId {
+    o String txnId
+    o String notes
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction AppendTags identified by txnId {
+    o String txnId
+    o String tags
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction ReplaceNotes identified by txnId {
+    o String txnId
+    o String notes
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction ReplaceTags identified by txnId {
+    o String txnId
+    o String tags
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction UpdateDue identified by txnId {
+    o String txnId
+    o Integer due
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction UpdateDuration identified by txnId {
+    o String txnId
+    o TaskDuration duration
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction UpdateEnergy identified by txnId {
+    o String txnId
+    o TaskEnergyLevel energy
+    --> Task task
+    --> User transactionExecutor
+}
+
+transaction UpdateState identified by txnId {
+    o String txnId
+    o TaskState state
+    --> Task task
+    --> User transactionExecutor
+}
+*/
+
+/*
+ * Bootstrap transaction -- For convenience.
+ */
+transaction Bootstrap identified by txnId {
+    o String txnId
+}
