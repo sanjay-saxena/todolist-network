@@ -66,8 +66,7 @@ participant User identified by email {
 /*
  * Transactions for creating, updating, and deleting users.
  */
-transaction CreateUser identified by txnId {
-    o String txnId
+transaction CreateUser {
     o String userEmail
     o String userFirstName
     o String userLastName
@@ -75,8 +74,7 @@ transaction CreateUser identified by txnId {
     --> User transactionExecutor
 }
 
-transaction UpdateUser identified by txnId {
-    o String txnId
+transaction UpdateUser {
     o String userFirstName optional
     o String userLastName optional
     o String userPassword optional
@@ -84,8 +82,7 @@ transaction UpdateUser identified by txnId {
     --> User transactionExecutor
 }
 
-transaction DeleteUser identified by txnId {
-    o String txnId
+transaction DeleteUser {
     --> User user
     --> User transactionExecutor
 }
@@ -93,21 +90,18 @@ transaction DeleteUser identified by txnId {
 /*
  * Transactions for assigning, creating, completing, deleting,  and updating tasks.
  */
-transaction AssignTask identified by txnId {
-    o String txnId
+transaction AssignTask {
     --> Task task
     --> User taskAssignee
     --> User transactionExecutor
 }
 
-transaction CompleteTask identified by txnId {
-    o String txnId
+transaction CompleteTask {
     --> Task task
     --> User transactionExecutor
 }
 
-transaction CreateTask identified by txnId {
-    o String txnId
+transaction CreateTask {
     o String taskId
     o String taskName
     o String taskLocation optional
@@ -120,14 +114,12 @@ transaction CreateTask identified by txnId {
     --> User transactionExecutor
 }
 
-transaction DeleteTask identified by txnId {
-    o String txnId
+transaction DeleteTask {
     --> Task task
     --> User transactionExecutor
 }
 
-transaction UpdateTask identified by txnId {
-    o String txnId
+transaction UpdateTask {
     o String taskName optional
     o String taskLocation optional
     o TaskDuration taskDuration optional
@@ -144,57 +136,49 @@ transaction UpdateTask identified by txnId {
 /*
  * Transactions for selectively updating attributes of a task.
 
-transaction AppendNotes identified by txnId {
-    o String txnId
+transaction AppendNotes {
     o String notes
     --> Task task
     --> User transactionExecutor
 }
 
-transaction AppendTags identified by txnId {
-    o String txnId
+transaction AppendTags {
     o String tags
     --> Task task
     --> User transactionExecutor
 }
 
-transaction ReplaceNotes identified by txnId {
-    o String txnId
+transaction ReplaceNotes {
     o String notes
     --> Task task
     --> User transactionExecutor
 }
 
-transaction ReplaceTags identified by txnId {
-    o String txnId
+transaction ReplaceTags {
     o String tags
     --> Task task
     --> User transactionExecutor
 }
 
-transaction UpdateDue identified by txnId {
-    o String txnId
+transaction UpdateDue {
     o Integer due
     --> Task task
     --> User transactionExecutor
 }
 
-transaction UpdateDuration identified by txnId {
-    o String txnId
+transaction UpdateDuration {
     o TaskDuration duration
     --> Task task
     --> User transactionExecutor
 }
 
-transaction UpdateEnergy identified by txnId {
-    o String txnId
+transaction UpdateEnergy {
     o TaskEnergyLevel energy
     --> Task task
     --> User transactionExecutor
 }
 
-transaction UpdateState identified by txnId {
-    o String txnId
+transaction UpdateState {
     o TaskState state
     --> Task task
     --> User transactionExecutor
@@ -204,6 +188,5 @@ transaction UpdateState identified by txnId {
 /*
  * Bootstrap transaction -- For convenience.
  */
-transaction Bootstrap identified by txnId {
-    o String txnId
+transaction Bootstrap {
 }

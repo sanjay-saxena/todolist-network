@@ -6,7 +6,8 @@ In order to create an Todo List app that is backed by Blockchain, you need to in
  * [Docker-compose](https://docs.docker.com/compose/) version 1.11.2 or later
  * [Node.js](https://nodejs.org/en/) version 6.10.X
  * [npm](https://www.npmjs.com/) version 4.4.4 or later
- * [Hyperledger Composer](https://hyperledger.github.io/composer/introduction/introduction.html) version 0.7.1 or later
+ * [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/) version 1.0
+ * [Hyperledger Composer](https://hyperledger.github.io/composer/introduction/introduction.html) version 0.10.1 or later
  * [Yeoman](http://yeoman.io/) Generator version 1.8.5 or later
 
 
@@ -17,8 +18,9 @@ $ cd ~/Workdir
 $ git clone https://github.com/sanjay-saxena/todolist-network
 $ cd ~/Workdir/todolist-network
 $ npm install
-$ ./scripts/downloadHyperledger.sh
-$ ./scripts/startHyperledger.sh
+$ ./fabric-tools/downloadHyperledger.sh
+$ ./fabric-tools/startFabric.sh
+$ ./scripts/importAdminIdentity.sh
 ```
 
 Hyperledger Composer provides higher-level abstractions to hide the complexity of the blockchain technologies that are implemented as part of Hyperledger Fabric. A Blockchain app that is built by Hyperledger Composer relies on a `Business Network` as an abstraction that helps orchestrate the transfer of assets. A `Business Network` comprises of `Business Model`, `Business Logic`, and `Access Control Lists`.
@@ -62,25 +64,21 @@ A participant is uniquely identified by his/her `email`.
 The model also defines `Transaction` types and some of them are shown below:
 
 ```
-transaction Bootstrap identified by transactionId {
-    o String transactionId
+transaction Bootstrap {
 }
 
-transaction AssignTask identified by transactionId {
-    o String transactionId
+transaction AssignTask {
     --> Task task
     --> User assignee
     ...
 }
 
-transaction CreateTask identified by transactionId {
-    o String transactionId
+transaction CreateTask {
     ....
     --> Task task
 }
 
-transaction CompleteTask identified by transactionId {
-    o String transactionId
+transaction CompleteTask {
     --> Task task
     ...
 }
