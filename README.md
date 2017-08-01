@@ -108,21 +108,21 @@ function onBootstrap(txn) {
     var factory = getFactory();
 
     // Admin
-    var bossman = factory.newInstance('org.example.todolist',
+    var bossman = factory.newResource('org.example.todolist',
                                       'User',
                                       'bobby.da.boss@example.com');
     bossman.firstName = "Bobby";
     bossman.lastName = "Da Boss";
     admins.push(bossman);
 
-    var catwoman = factory.newInstance('org.example.todolist',
+    var catwoman = factory.newResource('org.example.todolist',
                                        'User',
                                        'catwoman@example.com');
     catwoman.firstName = "Selina";
     catwoman.lastName = "Kyle";
     superheroes.push(catwoman);
 
-    var batman = factory.newInstance('org.example.todolist',
+    var batman = factory.newResource('org.example.todolist',
                                      'User',
                                      'batman@example.com');
     batman.firstName = "Bruce";
@@ -131,7 +131,7 @@ function onBootstrap(txn) {
 
     ....
 
-    var task1 = factory.newInstance('org.example.todolist',
+    var task1 = factory.newResource('org.example.todolist',
                                     'Task',
                                     'T1');
     task1.description = "Build a Bat Mobile!";
