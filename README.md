@@ -7,8 +7,8 @@ In order to create an Todo List app that is backed by Blockchain, you need to in
  * [Node.js](https://nodejs.org/en/) version 6.10.X
  * [npm](https://www.npmjs.com/) version 4.4.4 or later
  * [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/) version 1.0
- * [Hyperledger Composer](https://hyperledger.github.io/composer/introduction/introduction.html) version 0.10.1 or later
- * [Yeoman](http://yeoman.io/) Generator version 1.8.5 or later
+ * [Hyperledger Composer](https://hyperledger.github.io/composer/introduction/introduction.html) version 0.14.2 or later
+ * [Yeoman](http://yeoman.io/) Generator version 2.0.0 or later
 
 
 Once you have Docker and Docker-compose installed, you can download and and start Hyperledger Fabric v1.0 as shown below:
@@ -262,12 +262,12 @@ $ yo hyperledger-composer:angular
 Welcome to the Hyperledger Composer Angular2 skeleton app generator
 ? Do you want to connect to a running Business Network? Yes
 ? What is the name of the application you wish to generate?: angular-app
-? Description of the application: Skeleton Hyperledger Composer Angular2 project
+? Description of the application: Skeleton Hyperledger Composer Angular project
 ? Author name: xxxx xxxxx
 ? Author email: foo@example.com
 ? What is the Business Network Identifier?: todolist-network
 ? What is the Connection Profile to use? hlfv1
-? Enrollment id: admin
+? Enrollment id: PeerAdmin
 ? Enrollment Secret: adminpw
 Configuring: angular-app
 About to start creating files
