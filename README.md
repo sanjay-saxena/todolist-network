@@ -2,6 +2,7 @@
 
 In order to create an Todo List app that is backed by Blockchain, you need to install the following:
 
+ * OSX Only -- Install Xcode
  * [Docker](https://www.docker.com/) version 17.03 or later
  * [Docker-compose](https://docs.docker.com/compose/) version 1.11.2 or later
  * [Node.js](https://nodejs.org/en/) version 6.10.X
