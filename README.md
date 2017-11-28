@@ -8,6 +8,7 @@ for Hyperledger Composer.
 On any system, before proceeding any further, make sure that you have the following
 dependencies installed:
 
+ * OSX Only -- Install Xcode
  * [Docker](https://www.docker.com/) version 17.03 or later
  * [Docker-compose](https://docs.docker.com/compose/) version 1.11.2 or later
  * [Node.js](https://nodejs.org/en/) version 8.9 or higher
