@@ -1,2 +1,2 @@
 set -x
-composer network ping -n todolist-network -p hlfv1 -i PeerAdmin -s adminpw
+composer network ping --card admin@todolist-network

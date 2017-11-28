@@ -1,2 +1,2 @@
 set -x
-composer transaction submit  -n todolist-network -p hlfv1 -i PeerAdmin -s adminpw -d "{\"\$class\": \"org.example.todolist.Bootstrap\"}"
+composer transaction submit --card admin@todolist-network --data "{\"\$class\": \"org.example.todolist.Bootstrap\"}"

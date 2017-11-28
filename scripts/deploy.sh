@@ -1,2 +1,3 @@
 set -x
-composer network deploy -a todolist-network.bna -p hlfv1 -i PeerAdmin -s adminpw
+
+composer network deploy --card PeerAdmin@hlfv1 --networkAdmin admin --networkAdminEnrollSecret adminpw --archiveFile todolist-network@1.0.0.bna --file admin@networkadmin.card
