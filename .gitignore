@@ -1,4 +1,6 @@
 logs
 node_modules
 angular-app
+composer-logs
 *.bna
+*.card
