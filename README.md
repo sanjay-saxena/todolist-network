@@ -277,8 +277,7 @@ Welcome to the Hyperledger Composer Angular2 skeleton app generator
 ? Author email: foo@example.com
 ? License: Apache-2.0
 ? Name of the Business Network card: admin@todolist-network
-? Do you want to generate a new REST API or connect to an existing REST API?  Generate a new RES
-T API
+? Do you want to generate a new REST API or connect to an existing REST API?  Generate a new REST API
 ? REST server port: 3000
 ? Should namespaces be used in the generated REST API? Never use namespaces
 
