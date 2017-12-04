@@ -26,7 +26,7 @@ $ cd ~/Workdir
 $ git clone https://github.com/sanjay-saxena/todolist-network
 $ cd ~/Workdir/todolist-network
 $ npm install
-$ ./fabric-tools/downloadHyperledger.sh
+$ ./fabric-tools/downloadFabric.sh
 $ ./fabric-tools/startFabric.sh
 $ ./fabric-tools/createPeerAdminCard.sh
 ```
