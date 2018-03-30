@@ -22,7 +22,7 @@
     "winston": "^2.3.0"
   },
   "devDependencies": {
-     "homedir": "^0.6.0"
+    "homedir": "^0.6.0"
   },
   "bugs": {
     "url": "https://github.com/sanjay-saxena/todolist-network/issues"

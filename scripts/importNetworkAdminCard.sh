@@ -1,2 +1,2 @@
 set -x
-composer card import --file admin@networkadmin.card
+composer card import --file admin@todolist-network.card

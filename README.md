@@ -14,22 +14,25 @@ dependencies installed:
  * [Node.js](https://nodejs.org/en/) version 8.9 or higher
  * [npm](https://www.npmjs.com/) v5.x
  * [Python](https://www.python.org/download/releases/2.7/) 2.7.x
- * [Hyperledger Composer](https://hyperledger.github.io/composer/introduction/introduction.html) version 0.16.0 or later
+ * [Hyperledger Composer](https://hyperledger.github.io/composer/introduction/introduction.html) version 0.19.0 or later
  * [Yeoman](http://yeoman.io/) Generator version 2.0 or later
 
 
 Once you have Docker and Docker-compose installed, you can download and and start
-Hyperledger Fabric v1.0.4 as shown below:
+Hyperledger Fabric v1.1 as shown below:
 
 ```
 $ cd ~/Workdir
 $ git clone https://github.com/sanjay-saxena/todolist-network
 $ cd ~/Workdir/todolist-network
+$ export FABRIC_VERSION=hlfv11  // Add it the ~/.bash_profile
 $ npm install
 $ ./fabric-tools/downloadFabric.sh
 $ ./fabric-tools/startFabric.sh
 $ ./fabric-tools/createPeerAdminCard.sh
 ```
+
+The aforementioned steps download Hyperledger Fabric v1.1 docker images and start an instance of Hyperledger Fabric on your machine. Furthermore, a network card for `PeerAdmin` identity is created for the instance and the card is imported to the Certificate Authority that is part of the running instance.
 
 Hyperledger Composer provides higher-level abstractions to hide the complexity of the blockchain technologies that are implemented as part of Hyperledger Fabric. A Blockchain app that is built by Hyperledger Composer relies on a `Business Network` as an abstraction that helps orchestrate the transfer of assets. A `Business Network` comprises of `Business Model`, `Business Logic`, and `Access Control Lists`.
 
@@ -234,14 +237,16 @@ This will result in the creation of `todolist-network@1.0.0.bna`.
 
 ## Deploy Business Network Archive
 
-Assuming that Hyperledger Fabric is running, here is the step to deploy `todolist-network@1.0.0.bna` to it:
+Assuming that Hyperledger Fabric is running, here are the steps to install and start `todolist-network@1.0.0.bna` to it:
 
 ```
 $ cd ~/Workdir/todolist-network
-$ ./scripts/installPeerAdminCard.sh
+$ ./scripts/installNetwork.sh
 $ ./scripts/startNetwork.sh
 $ ./scripts/importNetworkAdminCard.sh
 ```
+
+The above steps also create a network administrator for the newly installed business network and then import the corresponding card for the administrator.
 
 ## Submit Bootstrap Transaction
 
@@ -253,6 +258,38 @@ $ ./scripts/bootstrapTransaction.sh
 ```
 
 You can use `./scripts/list.sh` to look at the assets that were created by the `Bootstrap` transaction.
+
+## Start REST server and generate Swagger API
+Using the todolist-network that is deployed to the local Hyperledger Fabric instance, you can create REST APIs that can be exercised from a mobile or web application. To be able to generate the REST APIs, first you should install `composer-rest-server` as shown below:
+
+```
+$ npm install -g composer-rest-server
+```
+
+Then, you can generate the REST APIs for the todolist-network as shown below:
+
+```
+$ cd ~/Workdir/todolist-network
+$ composer-rest-server
+? Enter the name of the business network card to use: admin@todolist-network
+? Specify if you want namespaces in the generated REST API: never use namespaces
+? Specify if you want to enable authentication for the REST API using Passport: No
+? Specify if you want to enable event publication over WebSockets: Yes
+? Specify if you want to enable TLS security for the REST API: No
+
+To restart the REST server using the same options, issue the following command:
+   composer-rest-server -c admin@todolist-network -n never -w true
+
+Discovering types from business network definition ...
+Discovered types from business network definition
+Generating schemas for all types in business network definition ...
+Generated schemas for all types in business network definition
+Adding schemas for all types to Loopback ...
+Added schemas for all types to Loopback
+Web server listening at: http://localhost:3000
+Browse your REST API at http://localhost:3000/explorer
+```
+REST APIs can be explored by loading `http://localhost:3000/explorer` in your browser.
 
 ## Generate Angular2 app
 
@@ -269,27 +306,31 @@ Here is the step to generate the Angular2 app for Todo List using Yeoman:
 $ cd ~/Workdir/todolist-network
 $ yo hyperledger-composer:angular
 
-Welcome to the Hyperledger Composer Angular2 skeleton app generator
+Welcome to the Hyperledger Composer project generator
+? Please select the type of project: Angular
+You can run this generator using: 'yo hyperledger-composer:angular'
+Welcome to the Hyperledger Composer Angular project generator
 ? Do you want to connect to a running Business Network? Yes
-? What is the name of the application you wish to generate?: angular-app
-? Description of the application: Skeleton Hyperledger Composer Angular project
-? Author name: xxxx xxxxx
-? Author email: foo@example.com
+? Project name: angular-app
+? Description: Hyperledger Composer Angular project
+? Author name: foo
+? Author email: foo@gmail.com
 ? License: Apache-2.0
 ? Name of the Business Network card: admin@todolist-network
-? Do you want to generate a new REST API or connect to an existing REST API?  Generate a new REST API
+? Do you want to generate a new REST API or connect to an existing REST API?  Connect to an
+existing REST API
+angular-app
+? REST server address: http://localhost
 ? REST server port: 3000
-? Should namespaces be used in the generated REST API? Never use namespaces
-
+? Should namespaces be used in the generated REST API? Namespaces are not used
 Created application!
-Completed generation process
 
 ....
 ```
 
 This will result in the generation of Todo List app in the `angular-app` sub-folder.
 
-## Run Todo List Angular2 App
+## Run Todo-List Angular2 App
 
 You can run the app as shown below:
 
