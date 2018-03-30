@@ -259,7 +259,7 @@ $ ./scripts/bootstrapTransaction.sh
 
 You can use `./scripts/list.sh` to look at the assets that were created by the `Bootstrap` transaction.
 
-## Start REST server and generate Swagger API
+## Start REST server and Generate Swagger API
 Using the todolist-network that is deployed to the local Hyperledger Fabric instance, you can create REST APIs that can be exercised from a mobile or web application. To be able to generate the REST APIs, first you should install `composer-rest-server` as shown below:
 
 ```
